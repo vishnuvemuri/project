@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Booking Management</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: url('/static/images/museum1.png') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.1);
+            z-index: -1;
+        }
+
+        /* Form Container */
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Notes Styling */
+        .note {
+            font-size: 1em;
+            color:rgb(248, 7, 7);
+            text-align: center;
+            font-family: 'Arial', sans-serif;
+            margin-bottom: 10px;
+        }
+
+        /* Header Inside Box */
+        h2 {
+            color: #4F46E5;
+            margin-bottom: 15px;
+        }
+
+        /* Flash Messages */
+        p.success {
+            background-color: rgba(79, 229, 70, 0.2);
+            color: green;
+            padding: 10px;
+            border-radius: 5px;
+            width: 90%;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        p.error {
+            background-color: rgba(229, 70, 70, 0.2);
+            color: red;
+            padding: 10px;
+            border-radius: 5px;
+            width: 90%;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        /* Input Fields */
+        label {
+            font-size: 16px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            border: 2px solid #4F46E5;
+            border-radius: 5px;
+            outline: none;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        /* Button */
+        button {
+            background-color: #4F46E5;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #3730A3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Manage Your Booking</h2>
+        
+        <!-- Notes Inside the Box -->
+        <h2 class="note">Note: This is for Chatbot booking management only.</h2>
+        <h2 class="note">Web-based bookings need to be managed on the website itself.</h2>
+        <h2 class="note">If you don't know, please click on Start Booking on the Home Page.</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <p class="{{ category }}">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('management') }}" method="post">
+            <label>Enter Booking ID:</label>
+            <input type="number" name="booking_id" required>
+            <button type="submit">Manage Booking</button>
+        </form>    
+    </div>
+
+</body>
+</html>

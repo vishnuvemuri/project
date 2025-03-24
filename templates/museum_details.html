@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Museum Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            text-align: center;
+            margin: 20px;
+            background: url('/static/images/10.png') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.2); /* 60% white overlay */
+            z-index: -1;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            width: 60%;
+            margin: auto;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        p {
+            font-size: 16px;
+            text-align: left;
+            line-height: 1.5;
+            margin: 8px 0;
+        }
+        strong {
+            color: #555;
+        }
+        .booking-form {
+            margin-top: 20px;
+        }
+        .book-button {
+            display: inline-block;
+            padding: 12px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .book-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>{{ museum_details['name'] }}</h1>
+        <p><strong>Address:</strong> {{ museum_details['address'] }}</p>
+        <p><strong>Location:</strong> {{ museum_details['location'] }}</p>
+        <p><strong>Opening Hours:</strong> {{ museum_details['opening_hours'] }}</p>
+        <p><strong>Holidays:</strong> {{ museum_details['holidays'] }}</p>
+        <p><strong>Required Time:</strong> {{ museum_details['required_time'] }}</p>
+        <p><strong>Description:</strong> {{ museum_details['description'] }}</p>
+        
+        <h3>Ticket Prices</h3>
+        <p><strong>Adult:</strong> {{ museum_details.prices['Adult'] }}</p>
+        <p><strong>Child:</strong> {{ museum_details.prices['Children'] }}</p>
+        <p><strong>Photography Fee:</strong> {{ museum_details.prices['Photography Fee'] }}</p>
+
+        <form action="{{ url_for('display_booking_form', museum_name=museum_details.name) }}" method="get" class="booking-form">
+            <input type="hidden" name="user_type" value="{{ request.args.get('user_type', '') }}">
+            <button type="submit" class="book-button">Book Tickets</button>
+        </form>
+    </div>
+
+</body>
+</html>

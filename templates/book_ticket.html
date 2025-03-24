@@ -1,0 +1,71 @@
+<!-- book_ticket.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Tickets for {{ museum_name }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('{{ url_for("static", filename="museum-background.jpg") }}') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;background: url('/static/images/2.png') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.2); /* 60% white overlay */
+            z-index: -1;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        input, button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <form action="{{ url_for('book_ticket') }}" method="post">
+        <h1>Book Tickets for {{ museum_name }}</h1>
+        <input type="hidden" name="museum_name" value="{{ museum_name }}">
+        <input type="text" name="user_name" placeholder="Your Name" required>
+        <input type="number" name="adult_tickets" placeholder="Adult Tickets (0+)" min="0" required>
+        <input type="number" name="children_tickets" placeholder="Children Tickets (0+)" min="0" required>
+        <input type="number" name="photography_tickets" placeholder="Photography Passes (0+)" min="0" required>
+        <button type="submit">Book Tickets</button>
+    </form>
+</body>
+</html>

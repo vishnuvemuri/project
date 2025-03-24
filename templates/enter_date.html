@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter Date and Time</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+            padding: 20px;
+            background: url('/static/images/6.png') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.2); /* 60% white overlay */
+            z-index: -1;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 30px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        .btn-custom {
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            padding: 10px;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+        .error-message {
+            color: red;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Enter Date and Time for Your Booking</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="alert alert-danger">
+                {% for category, message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('enter_date') }}">
+            <div class="form-group">
+                <label for="museum_name">Museum:</label>
+                <input type="text" class="form-control" id="museum_name" name="museum_name" value="{{ museum_data.name }}" disabled>
+            </div>
+
+            <div class="form-group">
+                <label for="opening_hours">Opening Hours:</label>
+                <input type="text" class="form-control" id="opening_hours" name="opening_hours" value="{{ museum_data.opening_hours }}" disabled>
+            </div>
+
+            <div class="form-group">
+                <label for="holidays">Holidays:</label>
+                <input type="text" class="form-control" id="holidays" name="holidays" value="{{ museum_data.holidays }}" disabled>
+            </div>
+
+            <div class="form-group">
+                <label for="required_time">Required Time:</label>
+                <input type="text" class="form-control" id="required_time" name="required_time" value="{{ museum_data.required_time }}" disabled>
+            </div>
+
+            <div class="form-group">
+                <label for="booking_date">Select Booking Date:</label>
+                <input type="date" class="form-control" id="booking_date" name="booking_date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="booking_time">Select Booking Time:</label>
+                <input type="time" class="form-control" id="booking_time" name="booking_time" required>
+            </div>
+
+            <button type="submit" class="btn btn-custom">Book Tickets</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

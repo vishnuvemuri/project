@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Museum Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            background: url('/static/images/6.png') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+        }
+        #chat-container {
+            width: 450px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        #chat-display {
+            width: 100%;
+            height: 300px;
+            overflow-y: auto;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .chat-button {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            flex: 1;
+        }
+        .chat-button:hover {
+            background-color: #0056b3;
+        }
+        input {
+            width: 90%;
+            padding: 8px;
+            margin-top: 10px;
+        }
+        .high-contrast {
+            background-color: black !important;
+            color: yellow !important;
+        }
+    </style>
+    <script>
+        function enableChat() {
+            document.getElementById('sendBtn').disabled = false;
+        }
+
+        function sendMessage(userMessage = null) {
+            if (!userMessage) {
+                userMessage = document.getElementById('userInput').value;
+                document.getElementById('userInput').value = '';
+            }
+            let selectedLanguage = document.getElementById("languageSelect").value;
+            if (!selectedLanguage) {
+                alert("Please select a language first.");
+                return;
+            }
+            document.getElementById('chat-display').innerHTML += `<p><strong>🧑:</strong> ${userMessage}</p>`;
+            fetch('http://127.0.0.1:5001/chat', { 
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: "user123", message: userMessage, language: selectedLanguage })
+            }) 
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('chat-display').innerHTML += `<p><strong>🤖:</strong> ${data.response}</p>`;
+            })
+            .catch(error => {
+                console.error('Fetch Error:', error);
+                document.getElementById('chat-display').innerHTML += `<p><strong>🤖:</strong> ⚠️ Error: Failed to get response.</p>`;
+            }); 
+        }
+
+
+        function startVoiceInput() {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = document.getElementById("languageSelect").value || "en-US";
+            recognition.start();
+            recognition.onresult = function(event) {
+                document.getElementById('userInput').value = event.results[0][0].transcript;
+            };
+        }
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function showPosition(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            sendMessage(`near_me ${lat},${lon}`);
+        }
+
+        function showError(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("User denied the request for Geolocation.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("Location information is unavailable.");
+                    break;
+                case error.TIMEOUT:
+                    alert("The request to get user location timed out.");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert("An unknown error occurred.");
+                    break;
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="chat-container">
+        <h2>Museum Chatbot</h2>
+        <label for="languageSelect">Choose Language:</label>
+        <select id="languageSelect" onchange="enableChat()">
+            <option value="" selected disabled>Select a Language</option>
+            <option value="en">English</option>
+            <option value="hi">Hindi</option>
+            <option value="es">Spanish</option>
+            <option value="zh">Chinese</option>
+            <option value="ru">Russian</option>
+        </select>
+        <div id="chat-display" role="log" aria-live="polite"></div>
+        <input type="text" id="userInput" placeholder="Type your message here..." aria-label="Type your message">
+        <button id="sendBtn" class="chat-button" onclick="sendMessage()" disabled>Send</button>
+        <button onclick="startVoiceInput()" class="chat-button">🎤 Voice Input</button>
+        <button onclick="getLocation()" class="chat-button">📍 Get Museums Near Me</button>
+    </div>
+</body>
+</html>
