@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommend Museums</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+    <div class="bg-white shadow-lg rounded-lg p-6 w-full max-w-md text-center">
+        <h1 class="text-2xl font-bold text-gray-800">Recommend Museums</h1>
+
+        <form action="/recommend_museums" method="POST" class="mt-6">
+            <label for="user_type" class="block text-lg font-medium text-gray-700">Are you an Indian or a Foreigner?</label>
+            <select id="user_type" name="user_type" required class="w-full mt-2 p-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-200">
+                <option value="" disabled selected>Select an option</option>
+                <option value="Indian">Indian</option>
+                <option value="Foreigner">Foreigner</option>
+            </select>
+
+            <button type="submit" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md transition duration-300 hover:bg-blue-600">
+                Submit
+            </button>
+        </form>
+    </div>
+
+</body>
+</html>

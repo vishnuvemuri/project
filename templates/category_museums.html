@@ -1,0 +1,71 @@
+<!-- category_museums.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Museums in {{ category }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            background: url('/static/images/4.png') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.2); /* 60% white overlay */
+            z-index: -1;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 5px 0;
+            width: 80%;
+            text-align: center;
+        }
+        a {
+            color: #007BFF;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ category }}</h1>
+    <ul>
+        {% for museum in museums %}
+        <li>
+            <a href="{{ url_for('display_museum_details', museum_name=museum['name']) }}">
+                {{ museum['name'] }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

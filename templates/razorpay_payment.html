@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Razorpay Payment</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+    <h2>Processing Payment...</h2>
+    <script>
+        var options = {
+            "key": "rzp_test_Vc1dMULkCvrbi2",
+            "amount": "{{ total_amount * 100 }}",
+            "currency": "INR",
+            "order_id": "{{ order_id }}",
+            "handler": function (response) {
+                // Send payment success details to Flask backend
+                fetch("/payment_success", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        booking_id: "{{ booking_id }}"
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.message);
+                    // Redirect to email entry page after successful payment
+                    window.location.href = "{{ url_for('enter_email', booking_id=booking_id) }}";
+                })
+                .catch(error => {
+                    console.error("Payment update failed:", error);
+                    alert("Payment was successful, but failed to update database. Contact support.");
+                });
+            },
+            "theme": {
+                "color": "#F37254"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    </script>        
+</body>
+</html>

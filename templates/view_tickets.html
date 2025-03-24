@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Tickets</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: url('/static/images/2.png') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.2); /* 60% white overlay */
+            z-index: -1;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+       form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .button {
+            background-color: #512da8;
+            color: #fff;
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #3f1d8a;
+        }
+        .button:active {
+            transform: scale(0.98);
+        }
+        .dashboard-button {
+            margin-top: 20px;
+            background-color: #333;
+        }
+        .dashboard-button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>View Tickets</h1>
+        <form id="tickets-form" onsubmit="handleTicketsSubmit(event)">
+            <div class="form-group">
+                <label for="museum-name">Museum Name</label>
+                <input type="text" id="museum-name" name="museum-name" required>
+            </div>
+            <div class="form-group">
+                <label for="ticket-date">Select Date</label>
+                <input type="date" id="ticket-date" name="ticket-date" required>
+            </div>
+            <button type="submit" class="button">View Tickets</button>
+        </form>
+        <div id="ticket-count" style="margin-top: 20px; font-size: 18px;"></div>
+        <button class="button dashboard-button" onclick="goToDashboard()">Go to Admin Dashboard</button>
+    </div>
+    <script>
+        function handleTicketsSubmit(event) {
+            event.preventDefault();
+            const museumName = document.getElementById('museum-name').value;
+            const date = document.getElementById('ticket-date').value;
+
+            fetch('/view_tickets_result', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ museum_name: museumName, date: date })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('ticket-count').innerText = `Total tickets booked for ${museumName} on ${date}: ${data.ticket_count}`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while fetching the ticket count.');
+            });
+        }
+
+        function goToDashboard() {
+            window.location.href = '/admin_dashboard';
+        }
+    </script>
+</body>
+</html>
