@@ -1,0 +1,65 @@
+{
+    "intents": [
+      {
+        "tag": "greeting",
+        "patterns": ["Hello", "Hey", "Good morning", "Hii"],
+        "responses": ["Hello! How can I assist you today?", "Hi there! How can I help?"]
+      },
+      {
+        "tag":"well_being",
+        "patterns":["How are you?"],
+        "responses":["I am fine. How can I help you?"]
+      },
+      {
+        "tag": "book_ticket",
+        "patterns": ["want to book a ticket", "Book Ticket", "Book a museum ticket", "Reserve a ticket"],
+        "responses": ["Sure! Which museum would you like to book a ticket for?"]
+      },
+      {
+        "tag": "museum_info",
+        "patterns": ["Tell me about the Louvre", "Opening hours of British Museum", "What is this museum about?"],
+        "responses": ["Louvre Museum is open from 9 AM to 6 PM. Would you like to book a ticket?"]
+      },
+      {
+        "tag": "ticket_price",
+        "patterns": ["ticket price", "What is the entry fee?", "Tell me ticket price"],
+        "responses": ["Ticket prices vary by museum and visitor type. Which museum are you asking about?"]
+      },
+      {
+        "tag": "museum_category",
+        "patterns": ["What types of museums are available?", "Show me Science and Technology museums", "List all categories"],
+        "responses": ["We have museums under these categories: Arts, Historical, Science and Technology, Archeology, General, etc."]
+      },
+      {
+        "tag": "opening_hours",
+        "patterns": ["Is the museum open today?", "What are the working hours?", "Is British Museum open on Sunday?"],
+        "responses": ["The museum opening hours vary. Please specify the museum name for accurate details."]
+      },
+      {
+        "tag": "holidays",
+        "patterns": ["When is the museum closed?", "What are the holidays?", "Is the museum open on public holidays?"],
+        "responses": ["Museums have different holiday schedules. Please provide a museum name for details."]
+      },
+      {
+        "tag": "help",
+        "patterns": ["What can you do?", "How does this chatbot work?", "How to use this bot?"],
+        "responses": ["I can assist you with museum details, ticket booking, recommendations, and ticket pricing."]
+      },
+      {
+        "tag": "goodbye",
+        "patterns": ["Bye", "See you", "Goodbye"],
+        "responses": ["Goodbye! Have a great day!", "See you again!"]
+      },
+      {
+        "tag": "recommend",
+        "patterns":["Recommend me some museums","recommend"],
+        "responses":["Do you want museums **near your location** or from a **specific category**?"]
+      },
+      {
+        "tag":"predict_crowd",
+        "patterns":["Predict Crowd"],
+        "responses":["Please provide the museum name, date (DD-MM-YYYY), and time (HH:MM) for crowd prediction."]
+      }
+    ]
+  }
+  

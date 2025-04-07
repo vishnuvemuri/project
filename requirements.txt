@@ -1,0 +1,11 @@
+APScheduler
+Flask
+geopy
+joblib
+mysql-connector-python
+numpy
+pandas
+pickle-mixin
+qrcode
+razorpay
+scikit-learn
