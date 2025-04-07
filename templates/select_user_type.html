@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select User Type</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Select User Type</h1>
+        <form action="{{ url_for('recommend_location_user_type') }}" method="POST">
+            <label for="user_type">Are you an Indian or a Foreigner?</label>
+            <select name="user_type" id="user_type" required>
+                <option value="Indian">Indian</option>
+                <option value="Foreigner">Foreigner</option>
+            </select>
+            <button type="submit" class="btn">Next</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Cancel Booking</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: url('/static/images/3.png') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.2);
+            z-index: -1;
+        }
+
+        /* Header */
+        h2 {
+            color: rgba(79, 70, 229, 0.9);
+            margin-bottom: 20px;
+        }
+
+        /* Flash Messages */
+        p.success {
+            background-color: rgba(79, 229, 70, 0.2);
+            color: green;
+            padding: 10px;
+            border-radius: 5px;
+            width: 80%;
+            text-align: center;
+        }
+
+        p.error {
+            background-color: rgba(229, 70, 70, 0.2);
+            color: red;
+            padding: 10px;
+            border-radius: 5px;
+            width: 80%;
+            text-align: center;
+        }
+
+        /* Form Styling */
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+        }
+
+        /* Labels & Inputs */
+        label {
+            font-size: 16px;
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input[type="number"],
+        input[type="radio"],
+        input[type="text"] {
+            margin-top: 5px;
+            width: 90%;
+            padding: 8px;
+            border: 2px solid rgba(79, 70, 229, 0.9);
+            border-radius: 5px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        /* Radio Buttons */
+        input[type="radio"] {
+            accent-color: rgba(79, 70, 229, 0.9);
+            transform: scale(1.2);
+            margin-right: 5px;
+        }
+
+        /* Hidden Sections */
+        #some_tickets, #upi_section {
+            display: none;
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(79, 70, 229, 0.1);
+        }
+
+        /* Button */
+        button {
+            background-color: rgba(79, 70, 229, 0.9);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 15px;
+            width: 100%;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: rgba(55, 48, 163, 0.9);
+        }
+
+        /* Back Link */
+        a {
+            display: block;
+            margin-top: 15px;
+            text-decoration: none;
+            color: rgba(79, 70, 229, 0.9);
+            font-weight: bold;
+            transition: color 0.3s ease-in-out;
+        }
+
+        a:hover {
+            color: rgba(55, 48, 163, 0.9);
+        }
+    </style>
+</head>
+<body>
+    <h2>Cancel Booking</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <p class="{{ category }}">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form id="cancelForm" action="{{ url_for('booking_cancel', booking_id=booking_id, museum_name=museum_name) }}" method="post">
+        <label>Do you want to cancel all tickets or some tickets?</label>
+        <input type="radio" id="all" name="cancel_option" value="all" required>
+        <label for="all">Cancel All Tickets</label><br>
+        <input type="radio" id="some" name="cancel_option" value="some" required>
+        <label for="some">Cancel Some Tickets</label>
+
+        <!-- Hidden section for partial ticket cancellation -->
+        <div id="some_tickets">
+            <label>Number of Adult Tickets to Cancel:</label>
+            <input type="number" name="adult_tickets" min="0" max="{{ booking.adult_tickets }}">
+            <label>Number of Children Tickets to Cancel:</label>
+            <input type="number" name="children_tickets" min="0" max="{{ booking.children_tickets }}">
+            <label>Number of Photography Tickets to Cancel:</label>
+            <input type="number" name="photography_tickets" min="0" max="{{ booking.photography_tickets }}">
+        </div>
+
+        <!-- Display Refund Eligibility -->
+        {% if refund_message %}
+        <p>{{ refund_message }}</p>
+        {% endif %}
+
+        <!-- Hidden section for UPI Refund -->
+        <div id="upi_section">
+            <label>Enter UPI ID for Refund:</label>
+            <input type="text" name="upi_id" placeholder="example@upi" pattern="^[a-zA-Z0-9.\-_]+@[a-zA-Z]+$">
+        </div>
+
+        <!-- Hidden input fields to pass refund data -->
+        <input type="hidden" name="amount_paid" value="{{ booking.amount_paid }}">
+        <input type="hidden" name="payment_id" value="{{ booking.payment_id }}">
+
+        <button type="submit">Cancel Booking</button>
+    </form>
+
+    <a href="{{ url_for('booking_manage', booking_id=booking_id) }}">Back to Booking</a>
+
+    <script>
+        document.getElementById('some').addEventListener('change', function() {
+            document.getElementById('some_tickets').style.display = 'block';
+        });
+
+        document.getElementById('all').addEventListener('change', function() {
+            document.getElementById('some_tickets').style.display = 'none';
+        });
+
+        // Show UPI section if refund is available
+        if ("{{ refund_message }}".includes("refund will be processed")) {
+            document.getElementById('upi_section').style.display = 'block';
+        }
+
+        // Ensure form validation for required fields
+        document.getElementById("cancelForm").addEventListener("submit", function(event) {
+            if (document.getElementById('some').checked) {
+                const adult = document.querySelector('input[name="adult_tickets"]').value;
+                const children = document.querySelector('input[name="children_tickets"]').value;
+                const photography = document.querySelector('input[name="photography_tickets"]').value;
+
+                if (!adult && !children && !photography) {
+                    event.preventDefault();
+                    alert("Please enter at least one ticket count for partial cancellation.");
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommend by Category</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-cover bg-center" 
+    style="background: url('/static/images/9.png') no-repeat center center fixed;
+    background-size: cover;
+    position: relative;">
+    <div class="bg-white shadow-lg rounded-lg p-6 w-full max-w-md text-center bg-opacity-90">
+        <h1 class="text-2xl font-bold text-gray-800 mb-4">Recommend by Category</h1>
+
+        <div class="grid grid-cols-2 gap-4">
+            {% for category in categories %}
+                <a href="/recommend/{{ category }}" 
+                   class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-300">
+                    {{ category }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+
+</body>
+</html>

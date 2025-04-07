@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Failed</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background-color: #f8d7da; }
+        h2 { color: #721c24; }
+        a { color: #721c24; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>Payment Failed ❌</h2>
+    <p>Unfortunately, your payment was not successful. Please try again.</p>
+    <p><a href="{{ url_for('payment', booking_id=booking_id) }}">Retry Payment</a></p>
+</body>
+</html>

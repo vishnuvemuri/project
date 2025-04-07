@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Book museum tickets effortlessly with Musebot, India's advanced chatbot ticketing system. Secure, multilingual, and user-friendly.">
+    <meta name="keywords" content="museum, chatbot, ticket booking, India, NLP, secure transactions">
+    <meta name="author" content="Musebot Team">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Musebot - Online Chatbot Ticketing System">
+    <meta property="og:description" content="Book museum tickets effortlessly with Musebot, India's advanced chatbot ticketing system.">
+    <meta property="og:image" content="https://yourwebsite.com/images/logo.png">
+    <meta property="og:url" content="https://yourwebsite.com">
+    <title>Musebot - Online Chatbot Ticketing System</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=MuseoModerno:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+    <style>
+        /* Custom Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes bounceAnimation {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .animate-slideUp {
+            animation: slideUp 1s ease-in-out;
+        }
+
+        .animate-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+
+        .animate-float {
+            animation: float 2s ease-in-out infinite;
+        }
+
+        .animate-bounce {
+            animation: bounce 1s infinite;
+        }
+
+        /* Button Animations */
+        .nav-button {
+            transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-3px);
+            opacity: 0.9;
+        }
+
+        .nav-button:active {
+            transform: translateY(0);
+        }
+
+        .dark-mode-toggle {
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .dark-mode-toggle:hover {
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        /* Chatbot Widget Animation */
+        #chatbot-widget {
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        #chatbot-widget:hover {
+            transform: scale(1.1) rotate(10deg);
+            background-color: rgba(79, 70, 229, 0.9);
+        }
+
+        /* Send Message Button Animation */
+        #send-message-btn {
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        #send-message-btn:hover {
+            transform: translateY(-3px);
+            background-color: rgba(79, 70, 229, 0.9);
+        }
+
+        /* Subscribe Button Animation */
+        #subscribe-btn {
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        #subscribe-btn:hover {
+            transform: translateY(-3px);
+            background-color: rgba(79, 70, 229, 0.9);
+        }
+
+        /* Start Booking Button Animation */
+        .cta-button {
+        animation: bounceAnimation 1.5s infinite;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .cta-button:hover {
+        transform: translateY(-5px); /* Slightly more lift on hover */
+        background-color: rgba(251, 191, 36, 0.9); /* Slightly darker yellow */
+        }
+        /* Back-to-Top Button */
+        #back-to-top {
+            position: fixed;
+            bottom: 100px; /* Positioned above the chatbot widget */
+            right: 30px; /* Aligned to the right */
+            color: black; /* Black color */
+            background-color:aliceblue; /* No background color */
+            border: none;
+            padding: 12px;
+            border-radius: 50%;
+            box-shadow: none; /* Remove shadow */
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            z-index: 1000; /* Ensure it's above other elements */
+        }
+
+        #back-to-top:hover {
+            transform: scale(1.1); /* Slightly enlarge on hover */
+        }
+
+              /* Standard Dark Mode Styles */
+.dark-mode {
+    /* Standard dark background like GitHub/VS Code */
+    background-color: #0d1117;
+    color: #c9d1d9;
+}
+
+/* Headers and text */
+.dark-mode h1,
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode h4,
+.dark-mode h5,
+.dark-mode h6 {
+    color: #ffffff;
+}
+
+/* Standard dark surfaces */
+.dark-mode .bg-white,
+.dark-mode .bg-gray-100 {
+    background-color: #161b22;
+    color: #c9d1d9;
+}
+
+/* Feature cards */
+.dark-mode .bg-indigo-100,
+.dark-mode .bg-green-100,
+.dark-mode .bg-blue-100,
+.dark-mode .bg-yellow-100 {
+    background-color: #21262d;
+    border: 1px solid #30363d;
+    color: #c9d1d9;
+}
+
+/* Text colors */
+.dark-mode .text-gray-600,
+.dark-mode .text-gray-700,
+.dark-mode .text-gray-800,
+.dark-mode .text-gray-900 {
+    color: #c9d1d9;
+}
+
+/* Gradient backgrounds */
+.dark-mode .bg-gradient-to-r {
+    background: #161b22;
+}
+
+/* Buttons and interactive elements */
+.dark-mode .cta-button {
+    background-color: #238636;  /* GitHub-style green */
+    color: #ffffff;
+}
+
+.dark-mode .cta-button:hover {
+    background-color: #2ea043;
+}
+
+/* Form elements */
+.dark-mode input,
+.dark-mode textarea {
+    background-color: #0d1117;
+    border: 1px solid #30363d;
+    color: #c9d1d9;
+}
+
+.dark-mode input:focus,
+.dark-mode textarea:focus {
+    border-color: #58a6ff;
+    outline: none;
+}
+
+/* Links */
+.dark-mode a:not(.cta-button) {
+    color: #58a6ff;
+}
+
+.dark-mode a:hover:not(.cta-button) {
+    color: #79c0ff;
+}
+
+/* Dark mode navigation styles */
+.dark-mode .nav-button {
+    color: #ffffff !important;  /* Force white text in dark mode */
+    transition: color 0.3s ease, transform 0.2s ease, opacity 0.2s ease;
+}
+
+.dark-mode .nav-button:hover {
+    color: #000000 !important;  /* Force black text on hover */
+    transform: translateY(-3px);
+    opacity: 0.9;
+}
+
+/* Special handling for login button to maintain its original styling */
+.dark-mode .nav-button.bg-black {
+    background-color: #000000 !important;  /* Force black background */
+    color: #ffffff !important;  /* Force white text */
+}
+
+.dark-mode .nav-button.bg-black:hover {
+    background-color: #ef4444 !important;  /* Red background on hover (bg-red-500) */
+    color: #030303 !important;  /* Keep text white on hover */
+}
+
+
+
+/* Dark mode toggle */
+.dark-mode #dark-mode-toggle {
+    background-color: #21262d;
+    border: 1px solid #30363d;
+}
+
+/* Chatbot widget */
+.dark-mode #chatbot-widget {
+    background-color: #238636;
+    color: white;
+}
+
+/* Back to top button */
+.dark-mode #back-to-top {
+    background-color: #21262d;
+    color: #c9d1d9;
+    border: 1px solid #30363d;
+}
+
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <!-- Loading Animation -->
+    <div id="loading" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="animate-bounce text-6xl text-white">
+            <i class="fas fa-robot"></i> <!-- Robot icon representing Musebot -->
+        </div>
+    </div>
+
+    <!-- Header Section -->
+    <header class="bg-indigo-600 text-white flex justify-between items-center px-6 py-4 shadow-lg">
+        <div class="flex items-center space-x-2">
+            <i class="fas fa-robot text-3xl"></i>
+<h1 class="text-2xl font-bold" style="font-family: 'MuseoModerno', cursive;">MuseBot</h1>
+        </div>
+        
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:flex space-x-6">
+            <a href="#" class="nav-button flex items-center space-x-2 hover:text-black transition">
+                <i class="fas fa-home text-xl"></i>
+                <span>Home</span>
+            </a>
+            <a href="/admin" class="nav-button flex items-center space-x-2 hover:text-black transition">
+                <i class="fas fa-user-shield text-xl"></i>
+                <span>Admin</span>
+            </a>
+            <a href="#contact" class="nav-button flex items-center space-x-2 hover:text-black transition">
+                <i class="fas fa-envelope text-xl"></i>
+                <span>Contact</span>
+            </a>
+            <a href="#about" class="nav-button flex items-center space-x-2 hover:text-black transition">
+                <i class="fas fa-info-circle text-xl"></i>
+                <span>About</span>
+            </a>
+            <a href="/management" class="nav-button flex items-center space-x-2 hover:text-black transition">
+                <i class="fas fa-calendar-alt text-xl"></i>
+                <span>Booking Management</span>
+              </a>
+            <!-- User Profile Dropdown -->
+            {% if 'user_email' in session %}
+                <div class="relative">
+                    <button id="userIcon" class="flex items-center space-x-2 text-white bg-black px-4 py-2 rounded-full shadow-lg hover:bg-red-500 transition">
+                        <i class="fas fa-user text-xl"></i>
+                    </button>
+                    
+                    <!-- Dropdown Menu -->
+                    <div id="profileDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg">
+                        <div class="p-4 text-gray-800">
+                            <p><strong>Email:</strong> {{ session['user_email'] }}</p>
+                            <hr class="my-2">
+                            <button id="myBookingsBtn" class="w-full text-left px-2 py-1 hover:bg-gray-200">📜 My Bookings</button>
+                            <button id="logoutBtn" class="w-full text-left px-2 py-1 mt-2 hover:bg-red-200 text-red-600">🚪 Logout</button>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <a href="/login" class="nav-button flex items-center space-x-2 text-white bg-black px-4 py-2 rounded-full shadow-lg hover:bg-red-500 transition">
+                    <i class="fas fa-sign-in-alt text-xl"></i>
+                    <span>Login</span>
+                </a>
+            {% endif %}
+
+        </nav>
+
+        <!-- Mobile Navigation Toggle -->
+        <button class="md:hidden text-white text-2xl">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <!-- Hero Section -->
+<section class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-center py-12 px-4 md:py-16 md:px-6 animate-fadeIn">
+    <h2 class="text-2xl md:text-4xl font-bold mb-4 animate-slideUp">Book Your Museum Tickets with Ease!</h2>
+    <p class="text-base md:text-lg mb-6 animate-slideUp">Chat with Musebot for instant ticket booking in top museums across India.</p>
+    <a href="{{ url_for('start_booking') }}" class="cta-button bg-yellow-400 text-black font-semibold px-6 py-3 rounded-full shadow-xl transition animate-bounce inline-block">
+        Start Booking
+    </a>
+</section>
+
+    <!-- Advanced Chatbot Technology Features Section -->
+    <section class="py-12 px-4 md:py-16 md:px-6 bg-white animate-fadeIn">
+        <h2 class="text-xl md:text-2xl font-bold text-center mb-8 md:mb-10">Advanced Chatbot Technology</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-4xl mx-auto">
+            <!-- Natural Language Processing -->
+            <div class="bg-indigo-100 p-4 md:p-6 rounded-lg shadow-indigo-500/50 hover:shadow-xl transition-shadow duration-300 text-center animate-slideUp">
+                <i class="fas fa-brain text-4xl text-indigo-600 mb-4"></i>
+                <h3 class="text-lg font-semibold">Natural Language Processing</h3>
+                <p class="text-gray-600">Our chatbot understands and processes human language, making conversations seamless and intuitive.</p>
+            </div>
+            <!-- Smart Recommendations -->
+            <div class="bg-green-100 p-4 md:p-6 rounded-lg shadow-green-500/50 hover:shadow-xl transition-shadow duration-300 text-center animate-slideUp">
+                <i class="fas fa-lightbulb text-4xl text-green-600 mb-4"></i>
+                <h3 class="text-lg font-semibold">Smart Recommendations</h3>
+                <p class="text-gray-600">Receive personalized recommendations for museum exhibits based on your preferences.</p>
+            </div>
+            <!-- Multi-lingual Support -->
+            <div class="bg-blue-100 p-4 md:p-6 rounded-lg shadow-blue-500/50 hover:shadow-xl transition-shadow duration-300 text-center animate-slideUp">
+                <i class="fas fa-language text-4xl text-blue-600 mb-4"></i>
+                <h3 class="text-lg font-semibold">Multi-lingual Support</h3>
+                <p class="text-gray-600">Available in multiple languages, making it accessible for users across India and beyond.</p>
+            </div>
+            <!-- Secure Transactions -->
+            <div class="bg-yellow-100 p-4 md:p-6 rounded-lg shadow-yellow-500/50 hover:shadow-xl transition-shadow duration-300 text-center animate-slideUp">
+                <i class="fas fa-lock text-4xl text-yellow-600 mb-4"></i>
+                <h3 class="text-lg font-semibold">Secure Transactions</h3>
+                <p class="text-gray-600">All payments are securely processed with encryption, ensuring a safe experience for every user.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-12 px-4 md:py-16 md:px-6 bg-white animate-fadeIn">
+        <h2 class="text-xl md:text-2xl font-bold text-center mb-8 md:mb-10">About Musebot</h2>
+        <div class="max-w-4xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- About Text -->
+                <div class="text-black-700  font-bold ">
+                    <p class="mb-4">
+
+
+                        ● Musebot is India's leading chatbot ticketing system, designed to revolutionize the way you book museum tickets. 
+                        Our mission is to make cultural exploration seamless, accessible, and enjoyable for everyone.
+                    </p>
+                    <p class="mb-4">
+
+
+                        ● With cutting-edge Natural Language Processing (NLP) and multilingual support, Musebot ensures a smooth and intuitive 
+                        experience for users across the country. Whether you're planning a solo visit or a group tour, Musebot has you covered.
+                    </p>
+                    <p class="mb-4">
+
+
+                        ● We are committed to providing secure transactions, personalized recommendations, and 24/7 support to enhance your museum 
+                        experience. Join us in making cultural heritage more accessible to all!
+                    </p>
+                    <p class="mb-4">
+
+
+                        ● At Musebot, we are passionate about bridging the gap between technology and culture. By leveraging AI, we aim to revolutionize the way people interact with museums, fostering a deeper appreciation for history and art. Join us in making cultural exploration smarter, simpler, and more engaging!
+                    </p>
+                </div>
+                <!-- About Image -->
+                <div class="flex justify-center items-center relative">
+                    <!-- Image Container with Blending Effect -->
+                    <div class="relative w-full max-w-md rounded-lg overflow-hidden">
+                        <!-- Background Overlay -->
+                        <!-- Image -->
+                        <img src="{{ url_for('static', filename='images/about-image.jpg') }}" alt="About Musebot" class="w-full h-auto object-cover rounded-lg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-center py-12 px-4 md:py-16 md:px-6 my-12 rounded-lg shadow-lg">
+    <h3 class="text-xl md:text-2xl font-bold mb-4">Start Booking Today!</h3>
+    <p class="text-base md:text-lg mb-6">Don’t miss out on your chance to experience incredible museums with ease. Book your tickets now!</p>
+    <a href="{{ url_for('start_booking') }}" class="cta-button bg-yellow-400 text-black font-semibold px-6 py-3 rounded-full shadow-xl transition animate-bounce inline-block">
+        Start Booking
+    </a>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-12 px-4 md:py-16 md:px-6 bg-indigo-100 animate-fadeIn">
+        <h2 class="text-xl md:text-2xl font-bold text-center mb-8 md:mb-10">What Our Users Say</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-4xl mx-auto">
+            <div class="bg-white p-4 md:p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 animate-slideUp">
+                <p class="text-sm md:text-base text-gray-600 mb-4">"Musebot made booking tickets so easy! Highly recommended!"</p>
+                <p class="text-gray-800 font-semibold">- Ravi Kumar</p>
+            </div>
+            <div class="bg-white p-4 md:p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 animate-slideUp">
+                <p class="text-sm md:text-base text-gray-600 mb-4">"The chatbot is super intuitive and fast. Great experience!"</p>
+                <p class="text-gray-800 font-semibold">- Priya Sharma</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="complaint" class="py-12 px-4 md:py-16 md:px-6 bg-gray-100 animate-fadeIn">
+        <h2 class="text-xl md:text-2xl font-bold text-center mb-8 md:mb-10">Register a Complaint</h2>
+        <form id="complaint-form" class="max-w-2xl mx-auto">
+            <div class="mb-4">
+                <input type="text" id="name" name="name" placeholder="Your Name" required class="w-full p-2 border border-gray-300">
+            </div>
+            <div class="mb-4">
+                <input type="email" id="email" name="email" placeholder="Your Email" required class="w-full p-2 border border-gray-300">
+            </div>
+            <div class="mb-4">
+                <textarea id="complaint" name="complaint" placeholder="Describe your complaint..." required class="w-full p-2 border border-gray-300"></textarea>
+            </div>
+            <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded-full hover:bg-indigo-700 transition">
+                Submit Complaint
+            </button>
+        </form>
+        <p id="form-response" class="text-center mt-4 text-sm"></p>
+    </section>    
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-900 text-gray-300 py-12">
+        <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-8">
+            <!-- About Section -->
+            <div>
+                <h3 class="text-lg font-bold mb-4">About Musebot</h3>
+                <p class="text-sm">Musebot is an innovative chatbot ticketing system designed to make museum visits seamless and enjoyable.</p>
+            </div>
+            <!-- Quick Links -->
+            <div>
+                <h3 class="text-lg font-bold mb-4">Quick Links</h3>
+                <ul class="space-y-2">
+                    <li><a href="#home" class="hover:text-yellow-400 transition">Home</a></li>
+                    <li><a href="#admin" class="hover:text-yellow-400 transition">Admin</a></li>
+                    <li><a href="#contact" class="hover:text-yellow-400 transition">Contact</a></li>
+                    <li><a href="#about" class="hover:text-yellow-400 transition">About</a></li>
+                </ul>
+            </div>
+            <!-- Newsletter -->
+            <section id="subscribe" class="py-12 px-4 md:py-16 md:px-6 bg-gray-100 animate-fadeIn">
+                <h2 class="text-xl md:text-2xl font-bold text-center mb-8 md:mb-10">Subscribe to Our Newsletter</h2>
+                <form id="subscribe-form" class="flex max-w-md mx-auto">
+                    <input type="email" id="email" name="email" placeholder="Your Email" required 
+                           class="w-full p-2 rounded-l-full border border-gray-300">
+                    <button id="subscribe-btn" type="submit" class="bg-indigo-600 text-white px-4 rounded-r-full hover:bg-indigo-700 transition">
+                        Subscribe
+                    </button>
+                </form>
+                <p id="subscribe-response" class="text-center mt-4 text-sm"></p>
+            </section>            
+        </div>
+        <div class="text-center mt-8">
+            <p>&copy; 2025 Musebot. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Chatbot Widget -->
+    <div id="chatbot-widget" class="fixed bottom-6 right-6 bg-black text-white p-4 rounded-full shadow-lg cursor-pointer transition">
+        <i class="fas fa-robot text-2xl"></i>
+    </div>
+
+    <!-- Back-to-Top Button -->
+    <button id="back-to-top" class="fixed bottom-100px right-30px text-black bg-transparent border-none p-3 rounded-full transition opacity-0 invisible ">
+        <i class="fas fa-arrow-up text-2xl"></i>
+    </button>
+
+    <!-- Dark Mode Toggle Widget -->
+    <button id="dark-mode-toggle" class="dark-mode-toggle fixed bottom-6 left-6 bg-indigo-600 text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 transition">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script>
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Clean dark mode toggle implementation
+const darkModeToggle = document.getElementById('dark-mode-toggle');
+
+function toggleDarkMode() {
+    const isDarkMode = document.body.classList.toggle('dark-mode');
+    localStorage.setItem('darkMode', isDarkMode);
+    darkModeToggle.innerHTML = isDarkMode ? 
+        '<i class="fas fa-sun"></i>' : 
+        '<i class="fas fa-moon"></i>';
+}
+
+// Set initial state
+document.addEventListener('DOMContentLoaded', () => {
+    // Check system preference
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    // Check saved preference
+    const savedPreference = localStorage.getItem('darkMode') === 'true';
+    
+    if (savedPreference || prefersDark) {
+        document.body.classList.add('dark-mode');
+        darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+});
+
+// Add click handler
+darkModeToggle.addEventListener('click', toggleDarkMode);
+
+        // Back-to-Top Button
+        const backToTopButton = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopButton.classList.remove('opacity-0', 'invisible');
+                backToTopButton.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopButton.classList.remove('opacity-100', 'visible');
+                backToTopButton.classList.add('opacity-0', 'invisible');
+            }
+        });
+
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Loading Animation
+        const loading = document.getElementById('loading');
+        window.addEventListener('load', () => {
+            loading.style.display = 'none';
+        });
+
+        // Fallback: Hide loading animation after 5 seconds (even if load event doesn't fire)
+        setTimeout(() => {
+            loading.style.display = 'none';
+        }, 5000); // 5000 milliseconds = 5 seconds
+        document.getElementById("userIcon").addEventListener("click", function() {
+            let dropdown = document.getElementById("profileDropdown");
+            dropdown.classList.toggle("hidden");
+        });
+    
+        document.getElementById("myBookingsBtn").addEventListener("click", function() {
+            window.location.href = "/my_bookings";  // ✅ Redirects to my_bookings.html
+        });                
+    
+        document.getElementById("logoutBtn").addEventListener("click", function() {
+            fetch("/logout")
+                .then(() => window.location.href = "/");  // Redirect to home page after logout
+        }); 
+
+        //To go to nlp_chatbot main.py
+        document.getElementById("chatbot-widget").addEventListener("click", function () {
+            window.location.href = "/chatbot"; // Redirects to chatbot.html
+        }); 
+
+        document.getElementById("complaint-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+    
+            const formData = new FormData(this);
+            const responseText = document.getElementById("form-response");
+    
+            fetch("/register-complaint", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                responseText.textContent = data.message;
+                responseText.style.color = data.success ? "green" : "red";
+                if (data.success) {
+                    document.getElementById("complaint-form").reset();
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                responseText.textContent = "❌ Failed to register complaint. Please try again.";
+                responseText.style.color = "red";
+            });
+        });
+        document.getElementById("subscribe-form").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent default form submission
+    
+            const formData = new FormData(this);
+            const responseText = document.getElementById("subscribe-response");
+    
+            fetch("/subscribe", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                responseText.textContent = data.message;
+                responseText.style.color = data.success ? "green" : "red";
+                if (data.success) {
+                    document.getElementById("subscribe-form").reset();
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                responseText.textContent = "❌ Subscription failed. Please try again.";
+                responseText.style.color = "red";
+            });
+        });
+    </script>
+</body>
+</html>

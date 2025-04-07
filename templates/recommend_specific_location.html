@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommend at Specific Location</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-cover bg-center" 
+    style="background: url('/static/images/6.png') no-repeat center center fixed;
+    background-size: cover;
+    position: relative;">
+    <div class="bg-white bg-opacity-90 shadow-lg rounded-lg p-6 w-full max-w-md text-center">
+        <h1 class="text-2xl font-bold text-gray-800 mb-4">Recommend Museums at Specific Location</h1>
+        
+        <form id="recommend-specific-location-form">
+            <label for="location" class="block text-lg text-gray-700">Enter Location:</label>
+            <input type="text" id="location" name="location" required 
+                   class="border border-gray-300 p-2 rounded-lg w-full mt-2">
+            <button type="submit" 
+                    class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-300">
+                Get Recommendations
+            </button>
+        </form>
+
+        <div id="results" class="mt-4 text-left"></div>
+    </div>
+
+    <script>
+        document.getElementById('recommend-specific-location-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const location = document.getElementById('location').value;
+            fetch('/recommend_near_location', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ location })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultsDiv = document.getElementById('results');
+                if (data.status === 'success') {
+                    resultsDiv.innerHTML = '<h2 class="text-xl font-semibold text-gray-800">Recommendations:</h2>';
+                    data.data.forEach(museum => {
+                        resultsDiv.innerHTML += `<p class="text-gray-700 mt-2">
+                            <a href="/museum/${museum.Name}" class="text-blue-600 hover:underline">${museum.Name}</a> - 
+                            ${museum.distance_km.toFixed(2)} km away
+                        </p>`;
+                    });
+                } else {
+                    resultsDiv.innerHTML = `<p class="text-red-500">${data.message}</p>`;
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

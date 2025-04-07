@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            text-align: center;
+            margin: 20px;
+            background: url('/static/images/4.png') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.2);
+            z-index: -1;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            width: 50%;
+            margin: auto;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #333;
+        }
+        p {
+            font-size: 16px;
+            text-align: left;
+            line-height: 1.5;
+            margin: 8px 0;
+        }
+        strong {
+            color: #555;
+        }
+        .total-amount {
+            font-size: 20px;
+            font-weight: bold;
+            color: #d9534f;
+        }
+        .payment-button {
+            display: inline-block;
+            padding: 12px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #512da8;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: 15px;
+        }
+        .payment-button:hover {
+            background-color: #3f1d8a;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Payment Details</h2>
+
+        {% if booking_data %}
+            <p><strong>Museum:</strong> {{ booking_data.museum_name }}</p>
+            <p><strong>Category:</strong> {{ booking_data.category }}</p>
+            <p><strong>Adult Tickets:</strong> {{ booking_data.adult_tickets }}</p>
+            <p><strong>Children Tickets:</strong> {{ booking_data.children_tickets }}</p>
+            <p><strong>Photography Tickets:</strong> {{ booking_data.photography_tickets }}</p>
+            <p class="total-amount">Total Amount: ₹{{ total_amount }}</p>
+
+            <form method="POST" action="{{ url_for('payment', booking_id=booking_id) }}">
+                <button type="submit" class="payment-button">Proceed to Payment</button>
+            </form>
+        {% else %}
+            <p style="color: red;"><strong>Error:</strong> Booking details not found.</p>
+        {% endif %}
+    </div>
+
+</body>
+</html>

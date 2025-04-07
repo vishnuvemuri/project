@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Special Event</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: url('/static/images/museum.png') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.2); /* 60% white overlay */
+            z-index: -1;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #512da8;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #512da8;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-group input[type="date"],
+        .form-group input[type="time"] {
+            padding: 8px;
+        }
+
+        .submit-btn {
+            background-color: #512da8;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #3f1d8a;
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Special Event</h1>
+        <form id="event-form" onsubmit="handleEventSubmit(event)">
+            <div class="form-group">
+                <label for="event-name">Event Name</label>
+                <input type="text" id="event-name" name="event-name" placeholder="Enter event name" required>
+            </div>
+            <div class="form-group">
+                <label for="event-date">Event Date</label>
+                <input type="date" id="event-date" name="event-date" required>
+            </div>
+            <div class="form-group">
+                <label for="event-time">Event Time</label>
+                <input type="time" id="event-time" name="event-time" required>
+            </div>
+            <div class="form-group">
+                <label for="museum-name">Museum Name</label>
+                <input type="text" id="museum-name" name="museum-name" placeholder="Enter Museum Name" required>
+            </div>
+            <div class="form-group">
+                <label for="event-description">Event Description</label>
+                <textarea id="event-description" name="event-description" placeholder="Enter event description" required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Add Event</button>
+        </form>
+    </div>
+
+    <script>
+        function handleEventSubmit(event) {
+            event.preventDefault();
+
+            // Get form data
+            const eventName = document.getElementById('event-name').value;
+            const eventDate = document.getElementById('event-date').value;
+            const eventTime = document.getElementById('event-time').value;
+            const museumName = document.getElementById('museum-name').value;
+            const eventDescription = document.getElementById('event-description').value;
+
+            // Create an event object
+            const eventData = {
+                name: eventName,
+                date: eventDate,
+                time: eventTime,
+                museum: museumName,
+                description: eventDescription
+            };
+
+            // Send the event data to the server
+            fetch('/add_event', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(eventData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.redirect) {
+                    window.location.href = data.redirect; // Redirect to admin dashboard
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while adding the event.');
+            });
+        }
+    </script>
+</body>
+</html>

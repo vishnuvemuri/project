@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Options</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            padding: 20px;background: url('/static/images/3.png') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.2); /* 60% white overlay */
+            z-index: -1;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        form {
+            margin: 15px 0;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Booking ID: {{ booking.id }}</h1>
+    <p>Museum Name: {{ booking.museum_name }}</p>
+    <p>Visit Date: {{ booking.visit_date }}</p>
+    <p>Visit Time: {{ booking.visit_time }}</p>
+
+    <h3>Select an option to manage your booking:</h3>
+    <form action="{{ url_for('change_time_slot', booking_id=booking.id) }}" method="GET">
+        <button type="submit">Change Time Slot</button>
+    </form>
+    <form action="{{ url_for('change_date_slot', booking_id=booking.id) }}" method="GET">
+        <button type="submit">Change Date Slot</button>
+    </form>
+    <form action="{{ url_for('cancel_booking', booking_id=booking.id) }}" method="POST">
+        <button type="submit">Cancel Booking</button>
+    </form>
+</body>
+</html>

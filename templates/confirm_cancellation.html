@@ -1,0 +1,66 @@
+<!-- confirm_cancellation.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirm Cancellation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: url('/static/images/5.png') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.2); /* 60% white overlay */
+            z-index: -1;
+        }
+        .message {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="message">
+        {% if partial_refund %}
+            <p>Only 50% will be refunded as the cancellation is within 24 hours of the booking time.</p>
+        {% else %}
+            <p>Full refund will be provided.</p>
+        {% endif %}
+        <form action="{{ url_for('confirm_cancellation') }}" method="post">
+            <input type="hidden" name="ticket_id" value="{{ ticket_id }}">
+            <button type="submit">Confirm Cancellation</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: url('/static/images/museum1.png') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.2); /* 60% white overlay */
+            z-index: -1;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #512da8;
+        }
+
+        .button {
+            background-color: #512da8;
+            color: #fff;
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            margin: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #3f1d8a;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+        }
+
+        .close {
+            float: right;
+            cursor: pointer;
+        }
+
+        .modal h2 {
+            margin-top: 0;
+        }
+
+        .modal label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        .modal select, .modal input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: '';
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #512da8;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+        <button class="button" onclick="window.location.href='/add_event'">Add Event</button>
+        <button class="button" onclick="window.location.href='/view_tickets'">View Tickets</button>
+        <!-- Button to Open Modal -->
+        <button class="button" onclick="openModal()">Manage Prices</button>
+    </div>
+
+    <!-- Modal for Dynamic Pricing Settings -->
+    <div id="priceModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Dynamic Pricing Settings</h2>
+            <form id="pricingForm">
+                <!-- Museum Name Dropdown -->
+                <label for="museumName">Museum Name</label> 
+<input type="text" id="museumName" name="museumName" list="museumList" placeholder="Search museum..." required>
+<datalist id="museumList">
+    <option value="National Gallery of Modern Art">
+    <option value="Academy of Fine Arts">
+    <option value="Birla Academy of Fine Art and Culture">
+    <option value="Sri Chitra Art Gallery">
+    <option value="Salar Jung Museum">
+    <option value="Kerala Folklore Museum">
+    <option value="Gandhi Smriti">
+    <option value="Victoria Memorial Hall">
+    <option value="Partition Museum">
+    <option value="Chhatrapati Shivaji Maharaj Vastu Sangrahalaya (formerly Prince of Wales Museum)">
+    <option value="Indian Museum">
+    <option value="National Museum">
+    <option value="City Palace Museum">
+    <option value="Jaisalmer War Museum">
+    <option value="Tribal Museum">
+    <option value="Heritage Transport Museum">
+    <option value="DakshinaChitra Museum">
+    <option value="Visvesvaraya Industrial and Technological Museum">
+    <option value="Nehru Science Centre">
+    <option value="National Science Centre">
+    <option value="Birla Science Museum">
+    <option value="Birla Industrial & Technological Museum">
+    <option value="Science City">
+    <option value="Kerala Science and Technology Museum">
+    <option value="Gujarat Science City">
+    <option value="Regional Science Centre">
+    <option value="Regional Science Centre and Planetarium">
+    <option value="Jalan Museum (Quila House)">
+    <option value="Gandhi Smarak Sangrahalaya (Gandhi Memorial Museum)">
+    <option value="Teen Murti Bhavan (Nehru Memorial Museum and Library)">
+    <option value="Albert Hall Museum">
+    <option value="Jagdish and Kamla Mittal Museum of Indian Art">
+    <option value="Maharaja Fateh Singh Museum">
+    <option value="Kirti Mandir">
+    <option value="Government Museum">
+    <option value="Archaeological Museum">
+    <option value="Indian Museum of Archaeology">
+    <option value="National Museum of Anthropology">
+    <option value="State Archaeological Museum">
+    <option value="National Museum of Minerals">
+    <option value="Rail Museum">
+    <option value="Kolkata Panorama">
+    <option value="National Museum of Indian Cinema">
+    <option value="Manav Sangrahalaya">
+    <option value="Kerala Museum">
+    <option value="Kumbharwada Museum">
+    <option value="Rajiv Gandhi Museum of Contemporary Art">
+    <option value="Raman Research Institute Museum">
+    <option value="Textiles & Art Museum">
+    <option value="Army Museum">
+    <option value="Gandhi Ashram">
+    <option value="Taj Museum">
+    <option value="Indira Gandhi Rashtriya Manav Sangrahalaya">
+    <option value="Red Fort">
+    <option value="Mysore Palace">
+    <option value="Kiran Nadar Museum of Art">
+    <option value="National Rail Museum">
+    <option value="The Bombay Natural History Society (BNHS) Museum">
+    <option value="Rumi Darwaza Museum">
+    <option value="Shankar’s International Dolls Museum">
+    <option value="TATA Institute of Fundamental Research (TIFR) Museum">
+    <option value="Raja Dinkar Kelkar Museum">
+</datalist>
+
+
+
+                <!-- Custom Museum Name Input (Hidden by Default) -->
+                <div id="customMuseumName" style="display: none;">
+                    <label for="customName">Enter Museum Name</label>
+                    <input type="text" id="customName" name="customName">
+                </div>
+
+                <label for="pricingFactor">Select Pricing Factor</label>
+                <select id="pricingFactor" name="pricingFactor">
+                    <option value="1.5">Peak Hours - 1.5x</option>
+                    <option value="1.2">Off-Peak Hours - 1.2x</option>
+                    <option value="1.0">Normal Hours - 1.0x</option>
+                    <option value="1.0">weekends - 1.3x</option>
+                    <option value="1.0">special-event - 1.4x</option>
+
+                </select>
+
+                <label>Factor Status</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="factorStatus" checked>
+                    <span class="slider"></span>
+                </label>
+                
+
+                <button type="submit" class="button">Save Settings</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Function to open the modal
+        function openModal() {
+            document.getElementById('priceModal').style.display = 'flex';
+        }
+
+        // Function to close the modal
+        function closeModal() {
+            document.getElementById('priceModal').style.display = 'none';
+        }
+
+        // Show/hide custom museum name input based on dropdown selection
+        document.getElementById('museumName').addEventListener('change', function () {
+            const customMuseumNameDiv = document.getElementById('customMuseumName');
+            if (this.value === 'Other') {
+                customMuseumNameDiv.style.display = 'block';
+            } else {
+                customMuseumNameDiv.style.display = 'none';
+            }
+        });
+
+        // Handle form submission
+        document.getElementById('pricingForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const museumName = document.getElementById('museumName').value;
+            const pricingFactor = parseFloat(document.getElementById('pricingFactor').value);
+            const factorStatus = document.getElementById('factorStatus').checked ? 1 : 0;
+            
+            fetch('/save_pricing', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    museum_name: museumName,
+                    pricing_factor: pricingFactor,
+                    factor_status: factorStatus
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Settings saved successfully!');
+                    closeModal();
+                } else {
+                    alert('Error saving settings: ' + data.error);
+                }
+            })
+            .catch(error => alert('Request failed: ' + error));
+        });
+
+    </script>
+</body>
+</html>

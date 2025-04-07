@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Admin Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: #c9d6ff;
+            background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+            position: relative;
+            overflow: hidden;
+            width: 90%;
+            max-width: 768px;
+            min-height: 400px;
+        }
+
+        .container p {
+            font-size: 14px;
+            line-height: 20px;
+            letter-spacing: 0.3px;
+            margin: 20px 0;
+        }
+
+        .container span {
+            font-size: 12px;
+        }
+
+        .container a {
+            color: #333;
+            font-size: 13px;
+            text-decoration: none;
+            margin: 15px 0 10px;
+        }
+
+        .container button {
+            background-color: #512da8;
+            color: #fff;
+            font-size: 12px;
+            padding: 10px 45px;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .container button:hover {
+            background-color: #3f1d8a;
+            transform: translateY(-2px);
+        }
+
+        .container form {
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 0 40px;
+            height: 100%;
+        }
+
+        .container input {
+            background-color: #eee;
+            border: none;
+            margin: 8px 0;
+            padding: 10px 15px;
+            font-size: 13px;
+            border-radius: 8px;
+            width: 100%;
+            outline: none;
+        }
+
+        .form-container {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            transition: all 0.6s ease-in-out;
+        }
+
+        .sign-in {
+            left: 0;
+            z-index: 2;
+        }
+
+        .social-icons {
+            margin: 20px 0;
+        }
+
+        a {
+            border: 1px solid #ccc;
+            border-radius: 20%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 3px;
+            width: 40px;
+            height: 40px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .social-icons a:hover {
+            background-color: #f1f1f1;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <div class="form-container sign-in">
+            <form id="login-form" onsubmit="handleLoginSubmit(event)">
+                <h1>Admin Login</h1>
+                <div class="social-icons">
+                    <div id="google-login" class="icon"><i class="fa-brands fa-google"></i></div>
+                </div>
+                <span>or use your email</span>
+                <input type="email" id="email-login" name="email" placeholder="Email" required>
+                <input type="text" id="otp-login" name="otp" placeholder="Enter OTP" style="display: none;">
+                <button type="submit" id="login-btn">Send OTP</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function handleLoginSubmit(event) {
+            event.preventDefault();
+
+            const emailField = document.getElementById('email-login');
+            const otpField = document.getElementById('otp-login');
+            const submitButton = document.getElementById('login-btn');
+            const email = emailField.value.trim();
+
+            if (!email) {
+                alert("Please enter your email.");
+                return;
+            }
+
+            if (submitButton.textContent === 'Verify OTP') {
+                verifyOTP(email, otpField.value);
+                return;
+            }
+
+            // Send OTP request
+            fetch('/admin_send_otp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === 'OTP sent successfully.') {
+                    otpField.style.display = 'block';
+                    submitButton.textContent = 'Verify OTP';
+                } else {
+                    alert(data.message || 'An error occurred.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while sending OTP.');
+            });
+        }
+
+        function verifyOTP(email, otp) {
+            if (!otp) {
+                alert("Please enter the OTP.");
+                return;
+            }
+
+            fetch('/verify_admin_otp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, otp })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Invalid OTP');
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('OTP verified successfully! Redirecting...');
+                window.location.href = data.redirect; // Redirect to admin dashboard
+            })
+            .catch(() => {
+                alert('Invalid OTP. Please try again.');
+            });
+        }
+    </script>
+</body>
+</html>

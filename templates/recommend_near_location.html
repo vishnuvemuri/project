@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommend Museums at Specific Location</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Recommend Museums at Specific Location</h1>
+        <form id="recommend-near-location-form">
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" required>
+            <button type="submit" class="btn">Get Recommendations</button>
+        </form>
+        <div id="results"></div>
+    </div>
+    <script>
+        document.getElementById('recommend-near-location-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const location = document.getElementById('location').value;
+            fetch('/recommend_near_location', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ location })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    const resultsDiv = document.getElementById('results');
+                    resultsDiv.innerHTML = '<h2>Recommendations:</h2>';
+                    data.data.forEach(museum => {
+                        resultsDiv.innerHTML += `<p>${museum.Name} - ${museum.distance_km.toFixed(2)} km away</p>`;
+                    });
+                } else {
+                    alert(data.message);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

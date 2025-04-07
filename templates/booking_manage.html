@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Booking</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 20px;
+            background: url('/static/images/6.png') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.2); /* 60% white overlay */
+            z-index: -1;
+        }
+        .container {
+            background: #fff;
+            padding: 20px;
+            width: 60%;
+            margin: auto;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2, h3 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f8f8;
+        }
+        .actions {
+            margin-top: 20px;
+        }
+        .action-link {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .action-link:hover {
+            background-color: #0056b3;
+        }
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .message {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Booking Details</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <p class="message {{ category }}">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <table>
+            <tr><th>Booking ID</th><td>{{ booking.id }}</td></tr>
+            <tr><th>Museum</th><td>{{ booking.museum_name }}</td></tr>
+            <tr><th>Visit Date and Time</th><td>{{ booking.visit_datetime }}</td></tr>
+        </table>
+
+        <h3>Museum Details</h3>
+        <table>
+            <tr><th>Opening Hours</th><td>{{ museum_info.opening_hours if museum_info else 'Not Available' }}</td></tr>
+            <tr><th>Holidays</th><td>{{ museum_info.holidays if museum_info else 'Not Available' }}</td></tr>
+        </table>
+
+        <h3>Manage Your Booking</h3>
+        <div class="actions">
+            <a href="{{ url_for('change_date', booking_id=booking.id, museum_name=booking.museum_name) }}" class="action-link">Change Date</a>
+            <a href="{{ url_for('booking_cancel', booking_id=booking.id, museum_name=booking.museum_name) }}" class="action-link" style="background-color: #dc3545;">Cancel Booking</a>
+        </div>
+
+        <a href="{{ url_for('management') }}" class="back-link">Go Back</a>
+    </div>
+
+</body>
+</html>
